@@ -1,0 +1,10 @@
+{
+  "version": "2025.02",
+  "amendments": ["2025 amendments"],
+  "parts": {
+    "B": { "title": "Fire Safety", "lastUpdated": "2025-02-01", "summary": "Updated Part B guidance reflecting 2025 amendments." },
+    "F": { "title": "Ventilation", "lastUpdated": "2025-02-01", "summary": "Updated Part F guidance reflecting 2025 amendments." },
+    "L": { "title": "Energy Efficiency", "lastUpdated": "2025-02-01", "summary": "Updated Part L guidance reflecting 2025 amendments." },
+    "O": { "title": "Overheating", "lastUpdated": "2025-02-01", "summary": "Updated Part O guidance reflecting 2025 amendments." }
+  }
+}

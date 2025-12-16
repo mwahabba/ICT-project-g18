@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Residential Regulation Navigator — Prototype</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- AUTH MODAL -->
+<div id="auth" class="auth-modal">
+  <div class="auth-card">
+    <div class="auth-left">
+      <h1>Welcome to<br><span class="brand">Residential Regulation Navigator</span></h1>
+      <p class="lead">Quickly access regulation parts, manage projects, and prevent disputes — designed for architects, clients and contractors.</p>
+      <div class="socials">
+        <button class="alt" onclick="social('google')">Continue with Google</button>
+        <button class="alt" onclick="social('microsoft')">Continue with Microsoft</button>
+      </div>
+      <p class="small">By continuing, you agree to our Terms & Privacy.</p>
+    </div>
+
+    <div class="auth-right">
+      <div id="signInView">
+        <h2>Sign in</h2>
+        <p class="muted">Use your team account to access the dashboard.</p>
+        <input id="email" placeholder="Email address" type="email" />
+        <input id="password" placeholder="Password" type="password" />
+        <div class="row">
+          <button class="btn-primary" onclick="doLogin()">Sign in</button>
+          <button class="alt" onclick="showSignup()">Create account</button>
+        </div>
+        <p class="muted center">Or sign in with SSO</p>
+      </div>
+
+      <div id="signupView" style="display:none">
+        <h2>Create account</h2>
+        <p class="muted">Create a new team account.</p>
+        <input id="su_name" placeholder="Full name" type="text" />
+        <input id="su_email" placeholder="Email address" type="email" />
+        <input id="su_password" placeholder="Password" type="password" />
+        <div class="row">
+          <button class="btn-primary" onclick="doSignup()">Create account</button>
+          <button class="alt" onclick="showSignin()">Back to sign in</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- APP LAYOUT -->
+<div id="app" class="app" style="display:none">
+
+  <aside class="sidebar">
+    <div class="brandline">
+      <div class="brand">Residential Regulation Navigator</div>
+      <button class="menu-toggle" aria-label="menu" onclick="/* placeholder */">≡</button>
+    </div>
+
+    <div class="small">Team · Project tools</div>
+
+    <nav class="menu">
+      <button class="active" data-target="home" onclick="navTo(event)">🏠 Dashboard</button>
+      <button data-target="regulation" onclick="navTo(event)">📚 Regulation Navigator</button>
+      <button data-target="dispute" onclick="navTo(event)">🛡️ Dispute Prevention</button>
+      <button data-target="projects" onclick="navTo(event)">📁 Projects</button>
+    </nav>
+
+    <div style="flex:1"></div>
+
+    <div class="profile">
+      <div style="font-size:13px">Signed in as</div>
+      <div style="text-align:right">
+        <div class="avatar">AP</div>
+        <div class="small-muted">Alex P. — Designer</div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-area">
+    <header class="topbar">
+      <div class="userbox">
+        <div class="bell">🔔</div>
+        <div class="avatar small">AP</div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    </header>
+
+    <section id="content" class="content">
+      <!-- HOME / DASHBOARD -->
+      <section id="home" class="page-section">
+        <div class="grid">
+          <div class="card welcome wide">
+            <h2>Welcome!</h2>
+            <p class="muted">Pick a regulation part to start — or continue a recent project.</p>
+
+            <div class="cards-row">
+              <div class="part-card" onclick="openPage('regulation')">
+                <div class="icon">📘</div>
+                <div class="title">Regulation Navigator</div>
+                <div class="desc">Browse Parts & Clauses</div>
+              </div>
+
+              <div class="part-card" onclick="openPage('dispute')">
+                <div class="icon">🛡️</div>
+                <div class="title">Dispute Prevention</div>
+                <div class="desc">Duty holder responsibilities & handover</div>
+              </div>
+
+              <div class="part-card" onclick="openPage('projects')">
+                <div class="icon">📁</div>
+                <div class="title">Projects</div>
+                <div class="desc">Manage project checklists & exports</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Recent Projects</h3>
+            <p class="muted">Your Project History</p>
+            <ul class="recent">
+              <li><strong>8 Storey New Build</strong> — Part B ongoing</li>
+              <li><strong>10 Storey Apartments</strong> — Pre-construction checks</li>
+              <li><strong>Loft Conversion</strong> — Handover stage</li>
+            </ul>
+          </div>
+
+          <section class="useful-links-wrapper">
+          <section class="useful-links">
+          <h2>Useful Links</h2>
+          <p class="links-subtitle">
+            Official guidance and resources to support compliance and best practice.
+          </p>
+
+          <div class="links-grid">
+            <a href="https://www.legislation.gov.uk/uksi/2023/909/regulation/38"
+              target="_blank" class="link-card">
+              <strong>Regulation 38 legislation</strong>
+              <span>contains Parts B, F, L, O (Official GOV.UK)</span>
+            </a>
+
+            <a href="https://www.legislation.gov.uk/ukpga/2022/30/contents"
+              target="_blank" class="link-card">
+              <strong>Building Safety Act 2022</strong>
+              <span>Duty holder roles & responsibilities</span>
+            </a>
+
+            <a href="https://www.gov.uk/government/collections/approved-documents"
+              target="_blank" class="link-card">
+              <strong>Building Regulations documents</strong>
+              <span>contains extensive guidance on compliance and standards</span>
+            </a>
+          </div>
+        </section>
+        </section>
+
+        </div>
+      </section>
+
+      <!-- REGULATION -->
+      <section id="regulation" class="page-section" style="display:none">
+        <div class="grid">
+          <div class="card narrow">
+            <h3>Project Details</h3>
+            <div class="project-panel">
+              <label>Project activity
+                <select><option>New Build</option><option>Refurbishment</option></select>
+              </label>
+              <label>Number of storeys <input type="number" value="2" /></label>
+              <label>External wall
+                <select><option>No</option><option>Yes</option></select>
+              </label>
+              <label>Regulation topics
+                <div class="small"><label><input type="checkbox"> Fire Safety</label><label><input type="checkbox"> Ventilation</label></div>
+              </label>
+            </div>
+          </div>
+
+          <div class="card wide">
+            <div class="card-head">
+              <h3>Regulation Navigator</h3>
+              <div class="tabs">
+                <button class="active">Programs</button>
+                <button>Clause Viewer</button>
+                <button>Checklist</button>
+              </div>
+            </div>
+
+            <p class="muted">Select a part to explore</p>
+
+            <div class="parts-grid">
+              <div class="part-tile" onclick="openPart('B')">
+                <div class="pt-icon">🔥</div>
+                <div class="pt-title">Part B</div>
+                <div class="pt-sub">Fire Safety</div>
+              </div>
+
+              <div class="part-tile" onclick="openPart('F')">
+                <div class="pt-icon">🌬️</div>
+                <div class="pt-title">Part F</div>
+                <div class="pt-sub">Ventilation</div>
+              </div>
+
+              <div class="part-tile" onclick="openPart('L')">
+                <div class="pt-icon">⚡</div>
+                <div class="pt-title">Part L</div>
+                <div class="pt-sub">Energy Efficiency</div>
+              </div>
+
+              <div class="part-tile" onclick="openPart('O')">
+                <div class="pt-icon">🌡️</div>
+                <div class="pt-title">Part O</div>
+                <div class="pt-sub">Overheating</div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn-primary" onclick="openClause()">Open Selected</button>
+              <button class="alt">Export</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Automatic updater</h3>
+              <div id="regUpdateStatus" class="reg-update-status">
+                  🔄 Checking regulation updates…
+              </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DISPUTE -->
+      <!-- DISPUTE -->
+<section id="dispute" class="page-section" style="display:none">
+  <div class="grid">
+    <div class="card wide">
+      <div class="navigator-wrapper">
+        <h2>Dispute Prevention Navigator</h2>
+
+        <!-- Q&A TOP BOX -->
+        <div class="qa-box">
+          <h3>Do you know what "appointments" are?</h3>
+
+          <button onclick="selectAnswer(this)">Yes</button>
+<button onclick="selectAnswer(this)">No</button>
+          <button onclick="toggleHelp(this)">What's that?</button>
+
+          <!-- Hidden explanation -->
+          
+          <div class="qa-help">
+            An appointment is when someone is officially given a role in a building project, such as Client, Principal Designer, or Principal Contractor.
+          </div>
+        </div>
+
+        <div class="qa-box">
+          <h3>Do you know what the client's responsibilites are?</h3>
+
+          <button onclick="selectAnswer(this)">Yes</button>
+<button onclick="selectAnswer(this)">No</button>
+          <button onclick="toggleHelp(this)">What's that?</button>
+
+          <!-- Hidden explanation -->
+          
+          <div class="qa-help">
+            Give information, choose competent people, keep safety documents, and make sure regulations are followed. 
+          </div>
+        </div>
+
+        <div class="qa-box">
+          <h3>Do you know what the designer's responsiblities are?</h3>
+
+          <button onclick="selectAnswer(this)">Yes</button>
+<button onclick="selectAnswer(this)">No</button>
+          <button onclick="toggleHelp(this)">What's that?</button>
+
+          <!-- Hidden explanation -->
+          
+          <div class="qa-help">
+            Follow Parts B, F, L, O, consider safety risks, and record decisions.
+          </div>
+        </div>
+
+        <div class="qa-box">
+          <h3>Do you know what Regulation 38 is?</h3>
+
+          <button onclick="selectAnswer(this)">Yes</button>
+<button onclick="selectAnswer(this)">No</button>
+          <button onclick="toggleHelp(this)">What's that?</button>
+
+          <!-- Hidden explanation -->
+          
+          <div class="qa-help">
+            It requires giving fire-safety information (strategy, alarms, escape routes) to the building owner at completion
+          </div>
+        </div>
+
+        <div class="qa-box">
+          <h3>Do you know what Building Safety Act 2022 is??</h3>
+
+          <button onclick="selectAnswer(this)">Yes</button>
+<button onclick="selectAnswer(this)">No</button>
+          <button onclick="toggleHelp(this)">What's that?</button>
+
+          <!-- Hidden explanation -->
+          
+          <div class="qa-help">
+            A law that improves building safety by requiring risk management and accurate safety records.
+          </div>
+        </div>
+
+        <div class="qa-box">
+          <h3>Do you know what the responsibilities for Part B (Fire Safety) are?</h3>
+
+          <button onclick="selectAnswer(this)">Yes</button>
+<button onclick="selectAnswer(this)">No</button>
+          <button onclick="toggleHelp(this)">What's that?</button>
+
+          <!-- Hidden explanation -->
+          
+          <div class="qa-help">
+            Provide safe escape routes, alarms, fire doors, smoke control, and fire-safety info.
+          </div>
+        </div>
+
+        <div class="qa-box">
+          <h3>Do you know what the responsibilities for Part F (Ventilation) are?</h3>
+
+          <button onclick="selectAnswer(this)">Yes</button>
+<button onclick="selectAnswer(this)">No</button>
+          <button onclick="toggleHelp(this)">What's that?</button>
+
+          <!-- Hidden explanation -->
+          
+          <div class="qa-help">
+            Provide good airflow, fresh air, ventilation systems if needed, and testing info.
+          </div>
+        </div>
+
+        <div class="qa-box">
+          <h3>Do you know what the responsibilities for Part L (Energy Efficiency) are?</h3>
+
+          <button onclick="selectAnswer(this)">Yes</button>
+<button onclick="selectAnswer(this)">No</button>
+          <button onclick="toggleHelp(this)">What's that?</button>
+
+          <!-- Hidden explanation -->
+          
+          <div class="qa-help">
+            Use insulation, low‑carbon heating, airtightness tests, SAP calculations, and provide EPC. 
+          </div>
+        </div>
+
+        <div class="qa-box">
+          <h3>Do you know what the responsibilities for Part O (Overheating) are?</h3>
+
+          <button onclick="selectAnswer(this)">Yes</button>
+<button onclick="selectAnswer(this)">No</button>
+          <button onclick="toggleHelp(this)">What's that?</button>
+
+          <!-- Hidden explanation -->
+          
+          <div class="qa-help">
+            Use shading, ventilation, and limit solar gain to keep indoor temps safe.
+          </div>
+        </div>
+
+        <div class="qa-box"">
+          <h3>Do you know what documents we're supposed to keep?</h3>
+
+          <button onclick="selectAnswer(this)">Yes</button>
+<button onclick="selectAnswer(this)">No</button>
+          <button onclick="toggleHelp(this)">What's that?</button>
+
+          <!-- Hidden explanation -->
+          
+          <div class="qa-help">
+            TDesigns, calculations, test results, certificates, maintenance info, and fire‑safety handover pack. 
+          </div>
+        </div>
+
+
+<!-- Tabs -->
+<div class="tabs">
+  <button id="responsibilities-btn" class="active" onclick="switchGuidance('responsibilities')">
+    Duty holder Responsibilities
+  </button>
+  <button id="reg38-btn" onclick="switchGuidance('reg38')">
+    Regulation 38
+  </button>
+  <button id="handover-btn" onclick="switchGuidance('handover')">
+    Handover
+  </button>
+</div>
+
+<!-- Content -->
+<div class="guidance-content">
+
+  <div id="responsibilities" class="guidance-section active">
+    <h3>Duty holder Responsibilities</h3>
+    <p>The Building Safety Act 2022 places legal duties on Clients, Designers, Principal Designers and Principal Contractors.</p>
+    <ul>
+      <li>Identify safety risks early</li>
+      <li>Appoint competent duty holders</li>
+      <li>Keep clear design and safety records</li>
+      <li>Ensure work complies with Building Regulations</li>
+    </ul>
+  </div>
+
+  <div id="reg38" class="guidance-section">
+    <h3>Regulation 38</h3>
+    <p>Fire-safety information must be provided to the building owner at completion.</p>
+    <ul>
+      <li>Fire strategy documents</li>
+      <li>Fire doors and fire-stopping details</li>
+      <li>Escape routes and alarm systems</li>
+      <li>Maintenance instructions</li>
+    </ul>
+  </div>
+
+  <div id="handover" class="guidance-section">
+    <h3>Handover Guidance</h3>
+    <p>At completion, the building must be handed over safely with clear information.</p>
+    <ul>
+      <li>Provide Regulation 38 fire-safety pack</li>
+      <li>Provide ventilation and energy test results</li>
+      <li>Issue updated drawings and manuals</li>
+      <li>Ensure information is clear and accessible</li>
+    </ul>
+  </div>
+
+</div>
+
+
+        <!-- Progress BOTTOM BOX -->
+        <div class="progress-wrapper">
+          <div class="progress-steps">
+            <div class="step active">Preparation</div>
+            <div class="step active">Design</div>
+            <div class="step">Construction</div>
+            <div class="step">Handover</div>
+          </div>
+          <div class="progress-line">
+            <span class="line-fill"></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+      <!-- PROJECTS -->
+      <section id="projects" class="page-section" style="display:none">
+        <div class="grid">
+          <div class="card wide">
+            <h3>All Projects</h3>
+            <p class="muted">Manage and open projects</p>
+
+            <div class="filters">
+              <input
+                type="text"
+                id="projectSearch"
+                placeholder="Search projects…"
+              >
+
+              <select id="ownerFilter">
+                <option value="all">All Owners</option>
+                <option value="City Dev">City Dev</option>
+                <option value="Urban Arch">Urban Arch</option>
+                <option value="Private">Private</option>
+              </select>
+            </div>
+            <table class="table">
+              <thead><tr><th>Project</th><th>Stage</th><th>Parts</th><th>Owner</th></tr></thead>
+              <tbody>
+              <tbody>
+                <tr data-owner="City Dev">
+                  <td>8 Storey New Build</td>
+                  <td>Construction</td>
+                  <td>B, L</td>
+                  <td>City Dev</td>
+                </tr>
+
+                <tr data-owner="Urban Arch">
+                  <td>10 Storey Apartments</td>
+                  <td>Design</td>
+                  <td>B</td>
+                  <td>Urban Arch</td>
+                </tr>
+
+                <tr data-owner="Private">
+                  <td>Loft Conversion</td>
+                  <td>Handover</td>
+                  <td>F</td>
+                  <td>Private</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h3>Quick Actions</h3>
+            <div class="actions-col">
+              <button class="btn-primary">Create Project</button>
+              <button class="alt">Import Checklist</button>
+              <button class="alt">Export Project</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </section>
+  </main>
+</div>
+
+<script src="app.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

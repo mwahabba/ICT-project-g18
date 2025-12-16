@@ -1,0 +1,10 @@
+{
+  "version": "2024.10",
+  "amendments": ["2024 baseline"],
+  "parts": {
+    "B": { "title": "Fire Safety", "lastUpdated": "2024-10-01", "summary": "Current guidance for Part B." },
+    "F": { "title": "Ventilation", "lastUpdated": "2024-10-01", "summary": "Current guidance for Part F." },
+    "L": { "title": "Energy Efficiency", "lastUpdated": "2024-10-01", "summary": "Current guidance for Part L." },
+    "O": { "title": "Overheating", "lastUpdated": "2024-10-01", "summary": "Current guidance for Part O." }
+  }
+}
